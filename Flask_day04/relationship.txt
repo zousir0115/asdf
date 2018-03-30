@@ -1,0 +1,23 @@
+
+# 一查多
+In [1]: from test01_sqlalchemy import *
+
+In [2]: role = Role.query.get(1)
+
+In [3]: role.users
+Out[3]:
+[<User: wang-wang@163.com-123456-1>,
+ <User: zhou-zhou@163.com-456789-1>,
+ <User: qian-qian@gmail.com-1543567-1>,
+ <User: liu-liu@itheima.com-867322-1>]
+
+
+# 多查一
+In [1]: from test01_sqlalchemy import *
+
+In [2]: user = User.query.get(1)
+
+In [3]: user.role
+Out[3]: <Role: admin>
+
+In [4]:

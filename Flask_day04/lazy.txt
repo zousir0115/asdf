@@ -1,0 +1,26 @@
+# 添加lazy前: 即使不用，也都查询出来了
+In [1]: from test01_sqlalchemy import *
+
+In [2]: role = Role.query.get(1)
+
+In [3]: role.users
+Out[3]:
+[<User: wang-wang@163.com-123456-1>,
+ <User: zhou-zhou@163.com-456789-1>,
+ <User: qian-qian@gmail.com-1543567-1>,
+ <User: liu-liu@itheima.com-867322-1>]
+
+
+
+# 添加lazy后：用到时才会真正查询
+In [1]: from test01_sqlalchemy import *
+
+In [2]: role = Role.query.get(1)
+
+In [3]: role.users
+Out[3]: <sqlalchemy.orm.dynamic.AppenderBaseQuery at 0x108356590>
+
+In [4]: role.users[0]
+Out[4]: <User: wang-wang@163.com-123456-1>
+
+In [5]:

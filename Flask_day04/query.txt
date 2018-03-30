@@ -1,0 +1,150 @@
+ test01_sqlalchemy import *
+
+In [2]: User.query.all()
+Out[2]:
+[<User: wang-wang@163.com-123456-1>,
+ <User: zhang-zhang@189.com-201512-2>,
+ <User: chen-chen@126.com-987654-2>,
+ <User: zhou-zhou@163.com-456789-1>,
+ <User: tang-tang@itheima.com-158104-2>,
+ <User: wu-wu@gmail.com-5623514-2>,
+ <User: qian-qian@gmail.com-1543567-1>,
+ <User: liu-liu@itheima.com-867322-1>,
+ <User: li-li@163.com-4526342-2>,
+ <User: sun-sun@163.com-235523-2>]
+
+In [3]: User.query.count()
+Out[3]: 10L
+
+In [4]: User.query.first()
+Out[4]: <User: wang-wang@163.com-123456-1>
+
+In [5]: User.query.get(1)
+Out[5]: <User: wang-wang@163.com-123456-1>
+
+In [6]: User.query.get(4)
+Out[6]: <User: zhou-zhou@163.com-456789-1>
+
+In [7]: User.query.filter(User.id==4)
+Out[7]: <flask_sqlalchemy.BaseQuery at 0x10968c8d0>
+
+In [8]: User.query.filter(User.id==4).first()
+Out[8]: <User: zhou-zhou@163.com-456789-1>
+
+In [9]: User.query.filter_by(id=4)
+Out[9]: <flask_sqlalchemy.BaseQuery at 0x109694b50>
+
+In [10]: User.query.filter_by(id=4).first()
+Out[10]: <User: zhou-zhou@163.com-456789-1>
+
+In [11]: User.query.filter(User.name.endswith('g')).all()
+Out[11]:
+[<User: wang-wang@163.com-123456-1>,
+ <User: zhang-zhang@189.com-201512-2>,
+ <User: tang-tang@itheima.com-158104-2>]
+
+In [12]: User.query.filter(User.name != 'wang').all()
+Out[12]:
+[<User: zhang-zhang@189.com-201512-2>,
+ <User: chen-chen@126.com-987654-2>,
+ <User: zhou-zhou@163.com-456789-1>,
+ <User: tang-tang@itheima.com-158104-2>,
+ <User: wu-wu@gmail.com-5623514-2>,
+ <User: qian-qian@gmail.com-1543567-1>,
+ <User: liu-liu@itheima.com-867322-1>,
+ <User: li-li@163.com-4526342-2>,
+ <User: sun-sun@163.com-235523-2>]
+
+In [13]: from sqlalchemy import not_
+
+In [14]: User.query.filter(not_(User.name == 'wang')).all()
+Out[14]:
+[<User: zhang-zhang@189.com-201512-2>,
+ <User: chen-chen@126.com-987654-2>,
+ <User: zhou-zhou@163.com-456789-1>,
+ <User: tang-tang@itheima.com-158104-2>,
+ <User: wu-wu@gmail.com-5623514-2>,
+ <User: qian-qian@gmail.com-1543567-1>,
+ <User: liu-liu@itheima.com-867322-1>,
+ <User: li-li@163.com-4526342-2>,
+ <User: sun-sun@163.com-235523-2>]
+
+In [15]: User.query.filter(User.name.startswith('li'),User.email.startswith('li')).all()
+Out[15]: [<User: li-li@163.com-4526342-2>, <User: liu-liu@itheima.com-867322-1>]
+
+In [16]: from sqlalchemy import and_
+
+In [17]: User.query.filter(and_(User.name.startswith('li'),User.email.startswith('li'))).all()
+Out[17]: [<User: li-li@163.com-4526342-2>, <User: liu-liu@itheima.com-867322-1>]
+
+In [18]: from sqlalchemy import or_
+
+In [19]: User.query.filter(or_(User.password=='123456', User.email.endswith('itheima.com'))).all()
+Out[19]:
+[<User: wang-wang@163.com-123456-1>,
+ <User: tang-tang@itheima.com-158104-2>,
+ <User: liu-liu@itheima.com-867322-1>]
+
+In [20]: User.query.filter(User.id.in_([1,3,5,7,9])).all()
+Out[20]:
+[<User: wang-wang@163.com-123456-1>,
+ <User: chen-chen@126.com-987654-2>,
+ <User: tang-tang@itheima.com-158104-2>,
+ <User: qian-qian@gmail.com-1543567-1>,
+ <User: li-li@163.com-4526342-2>]
+
+In [21]: User.query.order_by(User.email).all()
+Out[21]:
+[<User: chen-chen@126.com-987654-2>,
+ <User: li-li@163.com-4526342-2>,
+ <User: liu-liu@itheima.com-867322-1>,
+ <User: qian-qian@gmail.com-1543567-1>,
+ <User: sun-sun@163.com-235523-2>,
+ <User: tang-tang@itheima.com-158104-2>,
+ <User: wang-wang@163.com-123456-1>,
+ <User: wu-wu@gmail.com-5623514-2>,
+ <User: zhang-zhang@189.com-201512-2>,
+ <User: zhou-zhou@163.com-456789-1>]
+
+In [22]: User.query.order_by(User.email.desc()).all()
+Out[22]:
+[<User: zhou-zhou@163.com-456789-1>,
+ <User: zhang-zhang@189.com-201512-2>,
+ <User: wu-wu@gmail.com-5623514-2>,
+ <User: wang-wang@163.com-123456-1>,
+ <User: tang-tang@itheima.com-158104-2>,
+ <User: sun-sun@163.com-235523-2>,
+ <User: qian-qian@gmail.com-1543567-1>,
+ <User: liu-liu@itheima.com-867322-1>,
+ <User: li-li@163.com-4526342-2>,
+ <User: chen-chen@126.com-987654-2>]
+
+In [23]: User.query.paginate(2, 3, False)
+Out[23]: <flask_sqlalchemy.Pagination at 0x1096e32d0>
+
+In [24]: paginate = User.query.paginate(2, 3, False)
+
+In [25]: paginate.items
+Out[25]:
+[<User: zhou-zhou@163.com-456789-1>,
+ <User: tang-tang@itheima.com-158104-2>,
+ <User: wu-wu@gmail.com-5623514-2>]
+
+In [26]: paginate.page
+Out[26]: 2
+
+In [27]: paginate.pages
+Out[27]: 4
+
+In [28]: user = User.query.filter(User.name=='liu').first()
+
+In [29]: user
+Out[29]: <User: liu-liu@itheima.com-867322-1>
+
+In [30]: user.role_id
+Out[30]: 1L
+
+In [31]: role = Role.query.get(user.role_id)
+
+In [32]: role
+Out[32]: <Role: admin>
